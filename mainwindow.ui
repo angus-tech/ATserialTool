@@ -56,14 +56,14 @@
            <item>
             <widget class="QComboBox" name="cbBaudRate"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="btnOpenPort">
+             <property name="text">
+              <string>打开串口</string>
+             </property>
+            </widget>
+           </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnOpenPort">
-           <property name="text">
-            <string>打开串口</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </widget>
@@ -218,7 +218,7 @@
          <item>
           <widget class="QLabel" name="labelCommu">
            <property name="text">
-            <string>通讯测试：</string>
+            <string>TCP/IP：</string>
            </property>
            <property name="topMargin" stdset="0">
             <number>10</number>
