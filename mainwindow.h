@@ -33,23 +33,23 @@ private slots:
 
     // AT指令按钮 - 基础指令
     void on_btnAT_clicked();
-    void on_btnATZ_clicked();
+    void on_btnATGMR_clicked();
     void on_btnATE0_clicked();
     void on_btnATE1_clicked();
-    void on_btnATV0_clicked();
+    void on_btnATRST_clicked();
     void on_btnATV1_clicked();
     void on_btnATQ0_clicked();
     void on_btnATQ1_clicked();
 
     // AT指令按钮 - 设备信息
-    void on_btnATCGMI_clicked();
-    void on_btnATCGMM_clicked();
-    void on_btnATCGMR_clicked();
+    void on_btnATCWMODEAP_clicked();
+    void on_btnATCWMODESTA_clicked();
+    void on_btnATCWMODEAPSTA_clicked();
 
     // AT指令按钮 - 网络状态
-    void on_btnATCSQ_clicked();
-    void on_btnATCREG_clicked();
-    void on_btnATCOPS_clicked();
+    void on_btnATCWLAP_clicked();
+    void on_btnATCWJAPwifi_clicked();
+    void on_btnATCIFSR_clicked();
 
     // AT指令按钮 - SIM卡信息
     void on_btnATCBC_clicked();

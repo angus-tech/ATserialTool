@@ -100,8 +100,8 @@ void MainWindow::sendATCommand(const QString &command)
     }
 
     QString cmd = command;
-    if(!cmd.endsWith("\r")) {
-        cmd += "\r";  // AT指令通常需要以回车结尾
+    if(!cmd.endsWith("\n")) {
+        cmd += "\r\n";  // AT指令通常需要以回车结尾
     }
 
     QByteArray data = cmd.toLocal8Bit();
@@ -359,10 +359,10 @@ void MainWindow::on_btnClearSend_clicked()
 // AT指令槽函数 - 基础指令
 //=============================================================================
 void MainWindow::on_btnAT_clicked() { sendATCommand("AT"); }
-void MainWindow::on_btnATZ_clicked() { sendATCommand("ATZ"); }
+void MainWindow::on_btnATGMR_clicked() { sendATCommand("AT+GMR"); }
 void MainWindow::on_btnATE0_clicked() { sendATCommand("ATE0"); }
 void MainWindow::on_btnATE1_clicked() { sendATCommand("ATE1"); }
-void MainWindow::on_btnATV0_clicked() { sendATCommand("ATV0"); }
+void MainWindow::on_btnATRST_clicked() { sendATCommand("ATRST"); }
 void MainWindow::on_btnATV1_clicked() { sendATCommand("ATV1"); }
 void MainWindow::on_btnATQ0_clicked() { sendATCommand("ATQ0"); }
 void MainWindow::on_btnATQ1_clicked() { sendATCommand("ATQ1"); }
@@ -370,16 +370,16 @@ void MainWindow::on_btnATQ1_clicked() { sendATCommand("ATQ1"); }
 //=============================================================================
 // AT指令槽函数 - 设备信息
 //=============================================================================
-void MainWindow::on_btnATCGMI_clicked() { sendATCommand("AT+CGMI"); }
-void MainWindow::on_btnATCGMM_clicked() { sendATCommand("AT+CGMM"); }
-void MainWindow::on_btnATCGMR_clicked() { sendATCommand("AT+CGMR"); }
+void MainWindow::on_btnATCWMODEAP_clicked() { sendATCommand("AT+CWMODE=2"); }
+void MainWindow::on_btnATCWMODESTA_clicked() { sendATCommand("AT+CWMODE=1"); }
+void MainWindow::on_btnATCWMODEAPSTA_clicked() { sendATCommand("AT+CWMODE=3"); }
 
 //=============================================================================
 // AT指令槽函数 - 网络状态
 //=============================================================================
-void MainWindow::on_btnATCSQ_clicked() { sendATCommand("AT+CSQ"); }
-void MainWindow::on_btnATCREG_clicked() { sendATCommand("AT+CREG?"); }
-void MainWindow::on_btnATCOPS_clicked() { sendATCommand("AT+COPS?"); }
+void MainWindow::on_btnATCWLAP_clicked() { sendATCommand("AT+CWLAP"); }
+void MainWindow::on_btnATCWJAPwifi_clicked() { sendATCommand("AT+CWJAP=\"Sheentec_work\",\"sheentec\""); }
+void MainWindow::on_btnATCIFSR_clicked() { sendATCommand("AT+CIFSR"); }
 
 //=============================================================================
 // AT指令槽函数 - SIM卡信息
