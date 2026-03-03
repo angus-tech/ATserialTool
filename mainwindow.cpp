@@ -14,21 +14,19 @@ void MainWindow::initUI()
 {
     // 初始化波特率下拉框
     ui->cbBaudRate->addItems(QStringList()
-        << "1200" << "2400" << "4800" << "9600"
-        << "19200" << "38400" << "57600" << "115200"
-        << "230400" << "460800" << "921600");
+        << "9600" << "115200");
     ui->cbBaudRate->setCurrentText("115200");
 
     // 初始化数据位
-    ui->cbDataBits->addItems(QStringList() << "5" << "6" << "7" << "8");
-    ui->cbDataBits->setCurrentText("8");
+//    ui->cbDataBits->addItems(QStringList() << "5" << "6" << "7" << "8");
+//    ui->cbDataBits->setCurrentText("8");
 
     // 初始化停止位
-    ui->cbStopBits->addItems(QStringList() << "1" << "1.5" << "2");
-    ui->cbStopBits->setCurrentText("1");
+//    ui->cbStopBits->addItems(QStringList() << "1" << "1.5" << "2");
+//    ui->cbStopBits->setCurrentText("1");
 
     // 初始化校验位
-    ui->cbParity->addItems(QStringList() << "无" << "奇校验" << "偶校验" << "标志校验" << "空白校验");
+//    ui->cbParity->addItems(QStringList() << "无" << "奇校验" << "偶校验" << "标志校验" << "空白校验");
 
     // 刷新串口列表
     refreshPortList();
@@ -63,9 +61,9 @@ void MainWindow::updatePortStatus(bool isOpen)
         ui->btnOpenPort->setText("关闭串口");
         ui->cbPortName->setEnabled(false);
         ui->cbBaudRate->setEnabled(false);
-        ui->cbDataBits->setEnabled(false);
-        ui->cbStopBits->setEnabled(false);
-        ui->cbParity->setEnabled(false);
+//        ui->cbDataBits->setEnabled(false);
+//        ui->cbStopBits->setEnabled(false);
+//        ui->cbParity->setEnabled(false);
         ui->btnRefresh->setEnabled(false);
 
         // 启用AT指令按钮
@@ -80,9 +78,9 @@ void MainWindow::updatePortStatus(bool isOpen)
         ui->btnOpenPort->setText("打开串口");
         ui->cbPortName->setEnabled(true);
         ui->cbBaudRate->setEnabled(true);
-        ui->cbDataBits->setEnabled(true);
-        ui->cbStopBits->setEnabled(true);
-        ui->cbParity->setEnabled(true);
+//        ui->cbDataBits->setEnabled(true);
+//        ui->cbStopBits->setEnabled(true);
+//        ui->cbParity->setEnabled(true);
         ui->btnRefresh->setEnabled(true);
 
         // 禁用AT指令按钮
@@ -291,32 +289,35 @@ void MainWindow::on_btnOpenPort_clicked()
         m_serialPort->setBaudRate(ui->cbBaudRate->currentText().toInt());
 
         // 设置数据位
-        switch(ui->cbDataBits->currentText().toInt()) {
-            case 5: m_serialPort->setDataBits(QSerialPort::Data5); break;
-            case 6: m_serialPort->setDataBits(QSerialPort::Data6); break;
-            case 7: m_serialPort->setDataBits(QSerialPort::Data7); break;
-            case 8: m_serialPort->setDataBits(QSerialPort::Data8); break;
-            default: m_serialPort->setDataBits(QSerialPort::Data8); break;
-        }
+//        switch(ui->cbDataBits->currentText().toInt()) {
+//            case 5: m_serialPort->setDataBits(QSerialPort::Data5); break;
+//            case 6: m_serialPort->setDataBits(QSerialPort::Data6); break;
+//            case 7: m_serialPort->setDataBits(QSerialPort::Data7); break;
+//            case 8: m_serialPort->setDataBits(QSerialPort::Data8); break;
+//            default: m_serialPort->setDataBits(QSerialPort::Data8); break;
+//        }
+        m_serialPort->setDataBits(QSerialPort::Data8);
 
         // 设置停止位
-        if(ui->cbStopBits->currentText() == "1") {
-            m_serialPort->setStopBits(QSerialPort::OneStop);
-        } else if(ui->cbStopBits->currentText() == "1.5") {
-            m_serialPort->setStopBits(QSerialPort::OneAndHalfStop);
-        } else if(ui->cbStopBits->currentText() == "2") {
-            m_serialPort->setStopBits(QSerialPort::TwoStop);
-        }
+        m_serialPort->setStopBits(QSerialPort::OneStop);
+//        if(ui->cbStopBits->currentText() == "1") {
+//            m_serialPort->setStopBits(QSerialPort::OneStop);
+//        } else if(ui->cbStopBits->currentText() == "1.5") {
+//            m_serialPort->setStopBits(QSerialPort::OneAndHalfStop);
+//        } else if(ui->cbStopBits->currentText() == "2") {
+//            m_serialPort->setStopBits(QSerialPort::TwoStop);
+//        }
 
         // 设置校验位
-        switch(ui->cbParity->currentIndex()) {
-            case 0: m_serialPort->setParity(QSerialPort::NoParity); break;
-            case 1: m_serialPort->setParity(QSerialPort::OddParity); break;
-            case 2: m_serialPort->setParity(QSerialPort::EvenParity); break;
-            case 3: m_serialPort->setParity(QSerialPort::MarkParity); break;
-            case 4: m_serialPort->setParity(QSerialPort::SpaceParity); break;
-            default: m_serialPort->setParity(QSerialPort::NoParity); break;
-        }
+//        switch(ui->cbParity->currentIndex()) {
+//            case 0: m_serialPort->setParity(QSerialPort::NoParity); break;
+//            case 1: m_serialPort->setParity(QSerialPort::OddParity); break;
+//            case 2: m_serialPort->setParity(QSerialPort::EvenParity); break;
+//            case 3: m_serialPort->setParity(QSerialPort::MarkParity); break;
+//            case 4: m_serialPort->setParity(QSerialPort::SpaceParity); break;
+//            default: m_serialPort->setParity(QSerialPort::NoParity); break;
+//        }
+        m_serialPort->setParity(QSerialPort::NoParity);
 
         // 打开串口
         if(m_serialPort->open(QIODevice::ReadWrite)) {

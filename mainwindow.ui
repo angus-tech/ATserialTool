@@ -59,48 +59,6 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutDataBits">
-           <item>
-            <widget class="QLabel" name="labelDataBits">
-             <property name="text">
-              <string>数据位：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="cbDataBits"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutStopBits">
-           <item>
-            <widget class="QLabel" name="labelStopBits">
-             <property name="text">
-              <string>停止位：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="cbStopBits"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutParity">
-           <item>
-            <widget class="QLabel" name="labelParity">
-             <property name="text">
-              <string>校验位：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="cbParity"/>
-           </item>
-          </layout>
-         </item>
-         <item>
           <widget class="QPushButton" name="btnOpenPort">
            <property name="text">
             <string>打开串口</string>
