@@ -37,9 +37,9 @@ private slots:
     void on_btnATE0_clicked();
     void on_btnATE1_clicked();
     void on_btnATRST_clicked();
-    void on_btnATRAV1_clicked();
-    void on_btnATRAV2_clicked();
-    void on_btnATRAV3_clicked();
+    void on_btnATCWLIF_clicked();
+    void on_btnATCIPMUX_clicked();
+    void on_btnATCIPMODE_clicked();
 
     // AT指令按钮 - 设备信息
     void on_btnATCWMODEAP_clicked();
@@ -52,9 +52,9 @@ private slots:
     void on_btnATCIFSR_clicked();
 
     // AT指令按钮 - SIM卡信息
-    void on_btnATCBC_clicked();
-    void on_btnATCCID_clicked();
-    void on_btnATCNUM_clicked();
+    void on_btnATCIPSTART_clicked();
+    void on_btnATCIPSEND_clicked();
+    void on_btnATCIPEXIT_clicked();
 
     // 自定义AT指令
     void on_btnSendCustom_clicked();

@@ -165,23 +165,23 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATRAV1">
+            <widget class="QPushButton" name="btnATCWLIF">
              <property name="text">
-              <string>RAV1</string>
+              <string>ATCWLIF</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATRAV2">
+            <widget class="QPushButton" name="btnATCIPMUX">
              <property name="text">
-              <string>RAV2</string>
+              <string>ATCIPMUX</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATRAV3">
+            <widget class="QPushButton" name="btnATCIPMODE">
              <property name="text">
-              <string>RAV3</string>
+              <string>ATCIPMODE</string>
              </property>
             </widget>
            </item>
@@ -258,9 +258,9 @@
           </layout>
          </item>
          <item>
-          <widget class="QLabel" name="labelSIM">
+          <widget class="QLabel" name="labelCommu">
            <property name="text">
-            <string>SIM卡信息：</string>
+            <string>通讯测试：</string>
            </property>
            <property name="topMargin" stdset="0">
             <number>10</number>
@@ -270,23 +270,23 @@
          <item>
           <layout class="QHBoxLayout" name="layoutSIM1">
            <item>
-            <widget class="QPushButton" name="btnATCBC">
+            <widget class="QPushButton" name="btnATCIPSTART">
              <property name="text">
-              <string>AT+CBC</string>
+              <string>connect AP</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATCCID">
+            <widget class="QPushButton" name="btnATCIPSEND">
              <property name="text">
-              <string>AT+CCID</string>
+              <string>into Send</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATCNUM">
+            <widget class="QPushButton" name="btnATCIPEXIT">
              <property name="text">
-              <string>AT+CNUM</string>
+              <string>exit Send</string>
              </property>
             </widget>
            </item>

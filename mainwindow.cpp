@@ -112,7 +112,7 @@ void MainWindow::sendATCommand(const QString &command)
     }
 
     QString cmd = command;
-    if(!cmd.endsWith("\n")) {
+    if(cmd != "+++" && !cmd.endsWith("\n")) {
         cmd += "\r\n";  // AT指令通常需要以回车结尾
     }
 
@@ -444,15 +444,15 @@ void MainWindow::on_btnATGMR_clicked() { sendATCommand("AT+GMR"); }
 void MainWindow::on_btnATE0_clicked() { sendATCommand("ATE0"); }
 void MainWindow::on_btnATE1_clicked() { sendATCommand("ATE1"); }
 void MainWindow::on_btnATRST_clicked() { sendATCommand("ATRST"); }
-void MainWindow::on_btnATRAV1_clicked() { sendATCommand("ATV1"); }
-void MainWindow::on_btnATRAV2_clicked() { sendATCommand("ATQ0"); }
-void MainWindow::on_btnATRAV3_clicked() { sendATCommand("ATQ1"); }
+void MainWindow::on_btnATCWLIF_clicked() { sendATCommand("AT+CWLIF"); }
+void MainWindow::on_btnATCIPMUX_clicked() { sendATCommand("AT+CIPMUX=0"); }     // 0:单连接    1:多连接
+void MainWindow::on_btnATCIPMODE_clicked() { sendATCommand("AT+CIPMODE=1"); }   // 0:普通模式  1:透传模式
 
 //=============================================================================
 // AT指令槽函数 - 设备信息
 //=============================================================================
-void MainWindow::on_btnATCWMODEAP_clicked() { sendATCommand("AT+CWMODE=2"); }
 void MainWindow::on_btnATCWMODESTA_clicked() { sendATCommand("AT+CWMODE=1"); }
+void MainWindow::on_btnATCWMODEAP_clicked() { sendATCommand("AT+CWMODE=2"); }
 void MainWindow::on_btnATCWMODEAPSTA_clicked() { sendATCommand("AT+CWMODE=3"); }
 
 //=============================================================================
@@ -463,11 +463,11 @@ void MainWindow::on_btnATCWJAPwifi_clicked() { sendATCommand("AT+CWJAP=\"Sheente
 void MainWindow::on_btnATCIFSR_clicked() { sendATCommand("AT+CIFSR"); }
 
 //=============================================================================
-// AT指令槽函数 - SIM卡信息
+// AT指令槽函数 - 通讯测试
 //=============================================================================
-void MainWindow::on_btnATCBC_clicked() { sendATCommand("AT+CBC"); }
-void MainWindow::on_btnATCCID_clicked() { sendATCommand("AT+CCID"); }
-void MainWindow::on_btnATCNUM_clicked() { sendATCommand("AT+CNUM"); }
+void MainWindow::on_btnATCIPSTART_clicked() { sendATCommand("AT+CIPSTART=\"TCP\",\"192.168.20.2\",8888"); }
+void MainWindow::on_btnATCIPSEND_clicked() { sendATCommand("AT+CIPSEND"); }
+void MainWindow::on_btnATCIPEXIT_clicked() { sendATCommand("+++"); }
 
 //=============================================================================
 // 自定义AT指令
@@ -482,7 +482,7 @@ void MainWindow::on_btnSendCustom_clicked()
 
     // 自动添加AT前缀（如果没有）
     if(!customCmd.startsWith("AT", Qt::CaseInsensitive)) {
-        customCmd = "AT" + customCmd;
+        customCmd = "AT+" + customCmd;
     }
 
     sendATCommand(customCmd);
