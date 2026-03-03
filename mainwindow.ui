@@ -6,71 +6,362 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>900</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>串口调试助手</string>
+   <string>串口调试助手 - AT指令版</string>
   </property>
   
   <!-- 中央控件 -->
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <!-- 左侧设置区域 - 直接使用QWidget而不是QGroupBox先 -->
+     <!-- 左侧区域 -->
      <widget class="QWidget" name="leftWidget">
       <layout class="QVBoxLayout" name="leftLayout">
+       
+       <!-- 串口设置组 -->
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
+        <widget class="QGroupBox" name="groupBoxPort">
+         <property name="title">
           <string>串口设置</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayoutPort">
+          
+          <!-- 端口选择 -->
+          <item>
+           <layout class="QHBoxLayout" name="layoutPort">
+            <item>
+             <widget class="QLabel" name="labelPort">
+              <property name="text">
+               <string>端口：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbPortName"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnRefresh">
+              <property name="text">
+               <string>刷新</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 波特率 -->
+          <item>
+           <layout class="QHBoxLayout" name="layoutBaud">
+            <item>
+             <widget class="QLabel" name="labelBaud">
+              <property name="text">
+               <string>波特率：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbBaudRate"/>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 数据位 -->
+          <item>
+           <layout class="QHBoxLayout" name="layoutDataBits">
+            <item>
+             <widget class="QLabel" name="labelDataBits">
+              <property name="text">
+               <string>数据位：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbDataBits"/>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 停止位 -->
+          <item>
+           <layout class="QHBoxLayout" name="layoutStopBits">
+            <item>
+             <widget class="QLabel" name="labelStopBits">
+              <property name="text">
+               <string>停止位：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbStopBits"/>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 校验位 -->
+          <item>
+           <layout class="QHBoxLayout" name="layoutParity">
+            <item>
+             <widget class="QLabel" name="labelParity">
+              <property name="text">
+               <string>校验位：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbParity"/>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 打开/关闭按钮 -->
+          <item>
+           <widget class="QPushButton" name="btnOpenPort">
+            <property name="text">
+             <string>打开串口</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        
+       <!-- AT指令组 -->
        <item>
-        <layout class="QHBoxLayout" name="portLayout">
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>端口:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbPortName"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnRefresh">
-           <property name="text">
-            <string>刷新</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       
-       <item>
-        <layout class="QHBoxLayout" name="baudLayout">
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>波特率:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbBaudRate"/>
-         </item>
-        </layout>
-       </item>
-       
-       <item>
-        <widget class="QPushButton" name="btnOpenPort">
-         <property name="text">
-          <string>打开串口</string>
+        <widget class="QGroupBox" name="groupBoxAT">
+         <property name="title">
+          <string>常用AT指令</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayoutAT">
+          
+          <!-- 基础指令 -->
+          <item>
+           <widget class="QLabel" name="labelBasic">
+            <property name="text">
+             <string>基础指令：</string>
+            </property>
+           </widget>
+          </item>
+          
+          <item>
+           <layout class="QHBoxLayout" name="layoutBasic1">
+            <item>
+             <widget class="QPushButton" name="btnAT">
+              <property name="text">
+               <string>AT</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATZ">
+              <property name="text">
+               <string>ATZ</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATE0">
+              <property name="text">
+               <string>ATE0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATE1">
+              <property name="text">
+               <string>ATE1</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
+          <item>
+           <layout class="QHBoxLayout" name="layoutBasic2">
+            <item>
+             <widget class="QPushButton" name="btnATV0">
+              <property name="text">
+               <string>ATV0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATV1">
+              <property name="text">
+               <string>ATV1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATQ0">
+              <property name="text">
+               <string>ATQ0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATQ1">
+              <property name="text">
+               <string>ATQ1</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 设备信息指令 -->
+          <item>
+           <widget class="QLabel" name="labelInfo">
+            <property name="text">
+             <string>设备信息：</string>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          
+          <item>
+           <layout class="QHBoxLayout" name="layoutInfo1">
+            <item>
+             <widget class="QPushButton" name="btnATCGMI">
+              <property name="text">
+               <string>AT+CGMI</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATCGMM">
+              <property name="text">
+               <string>AT+CGMM</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATCGMR">
+              <property name="text">
+               <string>AT+CGMR</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 网络状态指令 -->
+          <item>
+           <widget class="QLabel" name="labelNetwork">
+            <property name="text">
+             <string>网络状态：</string>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          
+          <item>
+           <layout class="QHBoxLayout" name="layoutNetwork1">
+            <item>
+             <widget class="QPushButton" name="btnATCSQ">
+              <property name="text">
+               <string>AT+CSQ</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATCREG">
+              <property name="text">
+               <string>AT+CREG?</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATCOPS">
+              <property name="text">
+               <string>AT+COPS?</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- SIM卡指令 -->
+          <item>
+           <widget class="QLabel" name="labelSIM">
+            <property name="text">
+             <string>SIM卡信息：</string>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          
+          <item>
+           <layout class="QHBoxLayout" name="layoutSIM1">
+            <item>
+             <widget class="QPushButton" name="btnATCBC">
+              <property name="text">
+               <string>AT+CBC</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATCCID">
+              <property name="text">
+               <string>AT+CCID</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnATCNUM">
+              <property name="text">
+               <string>AT+CNUM</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
+          <!-- 分隔线 -->
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          
+          <!-- 自定义AT指令输入 -->
+          <item>
+           <layout class="QHBoxLayout" name="layoutCustom">
+            <item>
+             <widget class="QLabel" name="labelCustom">
+              <property name="text">
+               <string>自定义:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEditCustomAT">
+              <property name="placeholderText">
+               <string>输入AT指令</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnSendCustom">
+              <property name="text">
+               <string>发送</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        
@@ -95,77 +386,120 @@
      <!-- 右侧区域 -->
      <widget class="QWidget" name="rightWidget">
       <layout class="QVBoxLayout" name="rightLayout">
+       
+       <!-- 接收区 -->
        <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
+        <widget class="QGroupBox" name="groupBoxReceive">
+         <property name="title">
           <string>接收区</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayoutReceive">
+          <item>
+           <widget class="QTextEdit" name="textReceive">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="fontFamily">
+             <string>Courier New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layoutReceiveCtrl">
+            <item>
+             <widget class="QCheckBox" name="cbHexDisplay">
+              <property name="text">
+               <string>十六进制显示</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="cbAutoScroll">
+              <property name="text">
+               <string>自动滚屏</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnClearReceive">
+              <property name="text">
+               <string>清空接收</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        
+       <!-- 发送区 -->
        <item>
-        <widget class="QTextEdit" name="textReceive">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       
-       <item>
-        <layout class="QHBoxLayout" name="receiveCtrlLayout">
-         <item>
-          <widget class="QCheckBox" name="cbHexDisplay">
-           <property name="text">
-            <string>十六进制显示</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnClearReceive">
-           <property name="text">
-            <string>清空</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="text">
+        <widget class="QGroupBox" name="groupBoxSend">
+         <property name="title">
           <string>发送区</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayoutSend">
+          <item>
+           <widget class="QTextEdit" name="textSend">
+            <property name="fontFamily">
+             <string>Courier New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layoutSendCtrl">
+            <item>
+             <widget class="QCheckBox" name="cbHexSend">
+              <property name="text">
+               <string>十六进制发送</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="cbTimerSend">
+              <property name="text">
+               <string>定时发送</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinTimerPeriod">
+              <property name="suffix">
+               <string> ms</string>
+              </property>
+              <property name="minimum">
+               <number>10</number>
+              </property>
+              <property name="maximum">
+               <number>10000</number>
+              </property>
+              <property name="value">
+               <number>1000</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnSend">
+              <property name="text">
+               <string>发送</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnClearSend">
+              <property name="text">
+               <string>清空发送</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </item>
-       
-       <item>
-        <widget class="QTextEdit" name="textSend"/>
-       </item>
-       
-       <item>
-        <layout class="QHBoxLayout" name="sendCtrlLayout">
-         <item>
-          <widget class="QCheckBox" name="cbHexSend">
-           <property name="text">
-            <string>十六进制发送</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnSend">
-           <property name="text">
-            <string>发送</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnClearSend">
-           <property name="text">
-            <string>清空</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
@@ -179,14 +513,52 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>900</width>
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   
   <!-- 状态栏 -->
   <widget class="QStatusBar" name="statusbar"/>
+  
+  <!-- 操作定义 -->
+  <action name="actionOpen">
+   <property name="text">
+    <string>打开</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>保存</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>关于</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
