@@ -11,9 +11,169 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>串口调试助手</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  
+  <!-- 中央控件 -->
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <!-- 左侧设置区域 - 直接使用QWidget而不是QGroupBox先 -->
+     <widget class="QWidget" name="leftWidget">
+      <layout class="QVBoxLayout" name="leftLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>串口设置</string>
+         </property>
+        </widget>
+       </item>
+       
+       <item>
+        <layout class="QHBoxLayout" name="portLayout">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>端口:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbPortName"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnRefresh">
+           <property name="text">
+            <string>刷新</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       
+       <item>
+        <layout class="QHBoxLayout" name="baudLayout">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>波特率:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbBaudRate"/>
+         </item>
+        </layout>
+       </item>
+       
+       <item>
+        <widget class="QPushButton" name="btnOpenPort">
+         <property name="text">
+          <string>打开串口</string>
+         </property>
+        </widget>
+       </item>
+       
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    
+    <item>
+     <!-- 右侧区域 -->
+     <widget class="QWidget" name="rightWidget">
+      <layout class="QVBoxLayout" name="rightLayout">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>接收区</string>
+         </property>
+        </widget>
+       </item>
+       
+       <item>
+        <widget class="QTextEdit" name="textReceive">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       
+       <item>
+        <layout class="QHBoxLayout" name="receiveCtrlLayout">
+         <item>
+          <widget class="QCheckBox" name="cbHexDisplay">
+           <property name="text">
+            <string>十六进制显示</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnClearReceive">
+           <property name="text">
+            <string>清空</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>发送区</string>
+         </property>
+        </widget>
+       </item>
+       
+       <item>
+        <widget class="QTextEdit" name="textSend"/>
+       </item>
+       
+       <item>
+        <layout class="QHBoxLayout" name="sendCtrlLayout">
+         <item>
+          <widget class="QCheckBox" name="cbHexSend">
+           <property name="text">
+            <string>十六进制发送</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSend">
+           <property name="text">
+            <string>发送</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnClearSend">
+           <property name="text">
+            <string>清空</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  
+  <!-- 菜单栏 -->
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -24,6 +184,8 @@
     </rect>
    </property>
   </widget>
+  
+  <!-- 状态栏 -->
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
