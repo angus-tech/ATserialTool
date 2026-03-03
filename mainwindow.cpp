@@ -70,6 +70,12 @@ void MainWindow::updatePortStatus(bool isOpen)
 
         // 启用AT指令按钮
         ui->groupBoxAT->setEnabled(true);
+
+        // 清空数据缓冲区
+        m_dataBuffer.clear();
+        if (m_dataTimer->isActive()) {
+            m_dataTimer->stop();
+        }
     } else {
         ui->btnOpenPort->setText("打开串口");
         ui->cbPortName->setEnabled(true);
@@ -85,6 +91,12 @@ void MainWindow::updatePortStatus(bool isOpen)
         // 如果定时发送开启，关闭它
         if(ui->cbTimerSend->isChecked()) {
             ui->cbTimerSend->setChecked(false);
+        }
+
+        // 清空数据缓冲区
+        m_dataBuffer.clear();
+        if (m_dataTimer->isActive()) {
+            m_dataTimer->stop();
         }
     }
 }
@@ -161,6 +173,52 @@ void MainWindow::appendReceiveData(const QByteArray &data)
     }
 }
 
+void MainWindow::processBufferedData()
+{
+    // 检查缓冲区是否为空
+    if (m_dataBuffer.isEmpty()) {
+        return;
+    }
+
+    // 获取当前时间戳
+    QString timestamp = QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
+
+    // 处理缓冲区的数据
+    if (ui->cbHexDisplay->isChecked()) {
+        // 十六进制显示
+        QString hexData;
+        for(int i = 0; i < m_dataBuffer.size(); i++) {
+            hexData += QString("%1 ").arg((unsigned char)m_dataBuffer[i], 2, 16, QChar('0')).toUpper();
+        }
+        QString displayData = QString("[%1] RX: %2").arg(timestamp).arg(hexData);
+        ui->textReceive->append(displayData);
+    } else {
+        // 文本显示 - 过滤掉非ASCII字符
+        QString textData;
+        for(int i = 0; i < m_dataBuffer.size(); i++) {
+            char c = m_dataBuffer[i];
+            if(isprint(c) || c == '\n' || c == '\r' || c == '\t') {
+                textData += c;
+            } else {
+                textData += QString("[%1]").arg((unsigned char)c, 2, 16, QChar('0')).toUpper();
+            }
+        }
+        QString displayData = QString("[%1] RX: %2").arg(timestamp).arg(textData);
+        ui->textReceive->append(displayData);
+    }
+
+    // 自动滚屏
+    if(ui->cbAutoScroll->isChecked()) {
+        QTextCursor cursor = ui->textReceive->textCursor();
+        cursor.movePosition(QTextCursor::End);
+        ui->textReceive->setTextCursor(cursor);
+    }
+
+    // 清空缓冲区
+    m_dataBuffer.clear();
+}
+
+
 //=============================================================================
 // 构造函数和析构函数
 //=============================================================================
@@ -169,6 +227,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , m_serialPort(new QSerialPort(this))
     , m_timer(new QTimer(this))
+    , m_dataTimer(new QTimer(this))  // 新增
+    , m_isReceiving(false)            // 新增
+    , m_lastReceiveTime(0)            // 新增
     , m_autoScroll(true)
 {
     ui->setupUi(this);
@@ -181,6 +242,11 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::readSerialData);
     connect(m_timer, &QTimer::timeout,
             this, &MainWindow::timerSendData);
+
+    connect(m_dataTimer, &QTimer::timeout,
+                this, &MainWindow::processBufferedData);
+        m_dataTimer->setSingleShot(true);  // 设置为单次触发
+        m_dataTimer->setInterval(10);      // 设置10ms超时
 
     // 连接自定义AT指令输入框的回车信号
     connect(ui->lineEditCustomAT, &QLineEdit::returnPressed,
@@ -269,8 +335,23 @@ void MainWindow::on_btnOpenPort_clicked()
 
 void MainWindow::readSerialData()
 {
-    QByteArray data = m_serialPort->readAll();
-    appendReceiveData(data);
+    // 读取所有可用数据
+    QByteArray newData = m_serialPort->readAll();
+
+    // 将新数据添加到缓冲区
+    m_dataBuffer.append(newData);
+
+    // 记录最后接收时间
+    m_lastReceiveTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
+    // 如果定时器未启动，启动它
+    if (!m_dataTimer->isActive()) {
+        m_dataTimer->start();
+    } else {
+        // 如果定时器已启动，重新启动（重置10ms计时）
+        m_dataTimer->stop();
+        m_dataTimer->start();
+    }
 }
 
 //=============================================================================
@@ -363,9 +444,9 @@ void MainWindow::on_btnATGMR_clicked() { sendATCommand("AT+GMR"); }
 void MainWindow::on_btnATE0_clicked() { sendATCommand("ATE0"); }
 void MainWindow::on_btnATE1_clicked() { sendATCommand("ATE1"); }
 void MainWindow::on_btnATRST_clicked() { sendATCommand("ATRST"); }
-void MainWindow::on_btnATV1_clicked() { sendATCommand("ATV1"); }
-void MainWindow::on_btnATQ0_clicked() { sendATCommand("ATQ0"); }
-void MainWindow::on_btnATQ1_clicked() { sendATCommand("ATQ1"); }
+void MainWindow::on_btnATRAV1_clicked() { sendATCommand("ATV1"); }
+void MainWindow::on_btnATRAV2_clicked() { sendATCommand("ATQ0"); }
+void MainWindow::on_btnATRAV3_clicked() { sendATCommand("ATQ1"); }
 
 //=============================================================================
 // AT指令槽函数 - 设备信息

@@ -37,9 +37,9 @@ private slots:
     void on_btnATE0_clicked();
     void on_btnATE1_clicked();
     void on_btnATRST_clicked();
-    void on_btnATV1_clicked();
-    void on_btnATQ0_clicked();
-    void on_btnATQ1_clicked();
+    void on_btnATRAV1_clicked();
+    void on_btnATRAV2_clicked();
+    void on_btnATRAV3_clicked();
 
     // AT指令按钮 - 设备信息
     void on_btnATCWMODEAP_clicked();
@@ -76,6 +76,8 @@ private slots:
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
 
+    void processBufferedData();  // 新增：处理缓存的串口数据
+
 private:
     // 辅助函数 - 声明所有私有函数
     void initUI();                    // 初始化UI
@@ -89,6 +91,10 @@ private:
     QSerialPort *m_serialPort;
     QTimer *m_timer;
     bool m_autoScroll;
+    QTimer *m_dataTimer;          // 新增：数据延迟处理定时器
+    QByteArray m_dataBuffer;      // 新增：串口数据缓存
+    bool m_isReceiving;            // 新增：是否正在接收数据
+    qint64 m_lastReceiveTime;      // 新增：最后接收数据的时间
 };
 
 #endif // MAINWINDOW_H
