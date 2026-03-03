@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1011</width>
-    <height>700</height>
+    <width>1017</width>
+    <height>1144</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>串口调试助手 - AT指令版</string>
+   <string>串口调试助手 - WiFi/AT指令版</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -93,7 +93,7 @@
            <item>
             <widget class="QPushButton" name="btnATGMR">
              <property name="text">
-              <string>ATGMR</string>
+              <string>AT+GMR</string>
              </property>
             </widget>
            </item>
@@ -118,28 +118,28 @@
            <item>
             <widget class="QPushButton" name="btnATRST">
              <property name="text">
-              <string>ATRST</string>
+              <string>AT+RST</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnATCWLIF">
              <property name="text">
-              <string>ATCWLIF</string>
+              <string>AT+CWLIF</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATCIPMUX">
+            <widget class="QPushButton" name="btnATCIPMODE0">
              <property name="text">
-              <string>ATCIPMUX</string>
+              <string>TCP普通</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATCIPMODE">
+            <widget class="QPushButton" name="btnATCIPMODE1">
              <property name="text">
-              <string>ATCIPMODE</string>
+              <string>TCP透传</string>
              </property>
             </widget>
            </item>
@@ -150,13 +150,10 @@
            <property name="text">
             <string>设备信息：</string>
            </property>
-           <property name="topMargin" stdset="0">
-            <number>10</number>
-           </property>
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutInfo1">
+          <layout class="QHBoxLayout" name="layoutInfo">
            <item>
             <widget class="QPushButton" name="btnATCWMODEAP">
              <property name="text">
@@ -185,75 +182,12 @@
            <property name="text">
             <string>网络状态：</string>
            </property>
-           <property name="topMargin" stdset="0">
-            <number>10</number>
-           </property>
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutNetwork1">
-           <item>
-            <widget class="QPushButton" name="btnATCWLAP">
-             <property name="text">
-              <string>scan WIFI</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnATCWJAPwifi">
-             <property name="text">
-              <string>connect WIFI</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnATCIFSR">
-             <property name="text">
-              <string>read IP</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelCommu">
+          <widget class="QLabel" name="labelTCP">
            <property name="text">
             <string>TCP/IP：</string>
-           </property>
-           <property name="topMargin" stdset="0">
-            <number>10</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutSIM1">
-           <item>
-            <widget class="QPushButton" name="btnATCIPSTART">
-             <property name="text">
-              <string>connect AP</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnATCIPSEND">
-             <property name="text">
-              <string>into Send</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnATCIPEXIT">
-             <property name="text">
-              <string>exit Send</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="Line" name="line">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
@@ -262,7 +196,7 @@
            <item>
             <widget class="QLabel" name="labelCustom">
              <property name="text">
-              <string>自定义:</string>
+              <string>自定义：</string>
              </property>
             </widget>
            </item>
@@ -281,6 +215,415 @@
             </widget>
            </item>
           </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxSettings">
+        <property name="title">
+         <string>设定信息</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayoutSettings">
+         <item>
+          <widget class="QLabel" name="labelWiFi">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>WiFi设置：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutSSID">
+           <item>
+            <widget class="QLabel" name="labelSSID">
+             <property name="text">
+              <string>SSID：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditSSID">
+             <property name="placeholderText">
+              <string>输入WiFi名称</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutPassword">
+           <item>
+            <widget class="QLabel" name="labelPassword">
+             <property name="text">
+              <string>密码：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditPassword">
+             <property name="echoMode">
+              <enum>QLineEdit::Password</enum>
+             </property>
+             <property name="placeholderText">
+              <string>输入WiFi密码</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutWiFiButtons">
+           <item>
+            <widget class="QPushButton" name="btnSaveWiFi">
+             <property name="text">
+              <string>保存WiFi设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnConnectWithSettings">
+             <property name="text">
+              <string>连接WiFi</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelTCPset">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>TCP连接设置：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutConnID">
+           <item>
+            <widget class="QLabel" name="labelConnID">
+             <property name="text">
+              <string>连接ID：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboConnID">
+             <item>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>4</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelConnType">
+             <property name="text">
+              <string>类型：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboConnType">
+             <item>
+              <property name="text">
+               <string>TCP</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>UDP</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SSL</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutIP">
+           <item>
+            <widget class="QLabel" name="labelIP">
+             <property name="text">
+              <string>IP地址：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditIP">
+             <property name="placeholderText">
+              <string>例如：192.168.1.100</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutPort">
+           <item>
+            <widget class="QLabel" name="labelPortNum">
+             <property name="text">
+              <string>端口号：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinPort">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>65535</number>
+             </property>
+             <property name="value">
+              <number>8888</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+<!-- 新增：普通传输和透传传输按钮 -->
+         <item>
+          <layout class="QHBoxLayout" name="layoutTransferMode">
+           <item>
+            <widget class="QPushButton" name="btnNormalMode">
+             <property name="text">
+              <string>普通传输</string>
+             </property>
+             <property name="toolTip">
+              <string>设置普通传输模式 (AT+CIPMODE=0)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnTransparentMode">
+             <property name="text">
+              <string>透传传输</string>
+             </property>
+             <property name="toolTip">
+              <string>设置透传传输模式 (AT+CIPMODE=1)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- 多连接控制按钮 -->
+         <item>
+          <layout class="QHBoxLayout" name="layoutMultiConn">
+           <item>
+            <widget class="QPushButton" name="btnEnableMux">
+             <property name="text">
+              <string>启用多连接</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnDisableMux">
+             <property name="text">
+              <string>禁用多连接</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         
+         <!-- TCP操作按钮 -->
+         <item>
+          <layout class="QHBoxLayout" name="layoutTCPButtons">
+           <item>
+            <widget class="QPushButton" name="btnSaveTCP">
+             <property name="text">
+              <string>保存设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnConnectTCP">
+             <property name="text">
+              <string>建立连接</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCloseConn">
+             <property name="text">
+              <string>关闭连接</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutMultiConn">
+           <item>
+            <widget class="QPushButton" name="btnEnableMux">
+             <property name="text">
+              <string>启用多连接</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnDisableMux">
+             <property name="text">
+              <string>禁用多连接</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutTCPButtons">
+           <item>
+            <widget class="QPushButton" name="btnSaveTCP">
+             <property name="text">
+              <string>保存设置</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnConnectTCP">
+             <property name="text">
+              <string>建立连接</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCloseConn">
+             <property name="text">
+              <string>关闭连接</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBoxConnStatus">
+           <property name="title">
+            <string>连接状态</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayoutConnStatus">
+            <item row="0" column="1">
+             <widget class="QLabel" name="labelConn0Status">
+              <property name="styleSheet">
+               <string notr="true">color: red;</string>
+              </property>
+              <property name="text">
+               <string>未连接</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelConn0">
+              <property name="text">
+               <string>连接0：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="labelConn1Status">
+              <property name="styleSheet">
+               <string notr="true">color: red;</string>
+              </property>
+              <property name="text">
+               <string>未连接</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="labelConn2Status">
+              <property name="styleSheet">
+               <string notr="true">color: red;</string>
+              </property>
+              <property name="text">
+               <string>未连接</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="labelConn3">
+              <property name="text">
+               <string>连接3：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLabel" name="labelConn4Status">
+              <property name="styleSheet">
+               <string notr="true">color: red;</string>
+              </property>
+              <property name="text">
+               <string>未连接</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelConn2">
+              <property name="text">
+               <string>连接2：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="labelConn3Status">
+              <property name="styleSheet">
+               <string notr="true">color: red;</string>
+              </property>
+              <property name="text">
+               <string>未连接</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="labelConn4">
+              <property name="text">
+               <string>连接4：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelConn1">
+              <property name="text">
+               <string>连接1：</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -422,7 +765,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1011</width>
+     <width>1017</width>
      <height>26</height>
     </rect>
    </property>
@@ -465,6 +808,47 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>cbBaudRate</tabstop>
+  <tabstop>btnAT</tabstop>
+  <tabstop>btnATGMR</tabstop>
+  <tabstop>btnATE0</tabstop>
+  <tabstop>btnATE1</tabstop>
+  <tabstop>btnATRST</tabstop>
+  <tabstop>btnATCWLIF</tabstop>
+  <tabstop>btnATCIPMODE0</tabstop>
+  <tabstop>btnATCIPMODE1</tabstop>
+  <tabstop>btnATCWMODEAP</tabstop>
+  <tabstop>btnATCWMODESTA</tabstop>
+  <tabstop>btnATCWMODEAPSTA</tabstop>
+  <tabstop>lineEditCustomAT</tabstop>
+  <tabstop>btnSendCustom</tabstop>
+  <tabstop>lineEditSSID</tabstop>
+  <tabstop>lineEditPassword</tabstop>
+  <tabstop>btnSaveWiFi</tabstop>
+  <tabstop>btnConnectWithSettings</tabstop>
+  <tabstop>comboConnID</tabstop>
+  <tabstop>comboConnType</tabstop>
+  <tabstop>lineEditIP</tabstop>
+  <tabstop>spinPort</tabstop>
+  <tabstop>btnEnableMux</tabstop>
+  <tabstop>btnDisableMux</tabstop>
+  <tabstop>btnSaveTCP</tabstop>
+  <tabstop>btnConnectTCP</tabstop>
+  <tabstop>btnCloseConn</tabstop>
+  <tabstop>textReceive</tabstop>
+  <tabstop>cbHexDisplay</tabstop>
+  <tabstop>cbAutoScroll</tabstop>
+  <tabstop>btnClearReceive</tabstop>
+  <tabstop>textSend</tabstop>
+  <tabstop>cbHexSend</tabstop>
+  <tabstop>cbTimerSend</tabstop>
+  <tabstop>spinTimerPeriod</tabstop>
+  <tabstop>btnSend</tabstop>
+  <tabstop>btnClearSend</tabstop>
+  <tabstop>cbPortName</tabstop>
+  <tabstop>btnRefresh</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
