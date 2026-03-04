@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1017</width>
-    <height>1144</height>
+    <width>1023</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -236,7 +236,7 @@
            <item>
             <widget class="QPushButton" name="btnSaveWiFi">
              <property name="text">
-              <string>保存WiFi设置</string>
+              <string>保存WiFi</string>
              </property>
             </widget>
            </item>
@@ -326,28 +326,6 @@
              </item>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutIP">
-           <item>
-            <widget class="QLabel" name="labelIP">
-             <property name="text">
-              <string>IP地址：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEditIP">
-             <property name="placeholderText">
-              <string>例如：192.168.1.100</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutPort">
            <item>
             <widget class="QLabel" name="labelPortNum">
              <property name="text">
@@ -369,6 +347,27 @@
             </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutIP">
+           <item>
+            <widget class="QLabel" name="labelIP">
+             <property name="text">
+              <string>IP地址：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditIP">
+             <property name="placeholderText">
+              <string>例如：192.168.1.100</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutPort"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="layoutTransferMode">
@@ -714,7 +713,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1017</width>
+     <width>1023</width>
      <height>26</height>
     </rect>
    </property>
@@ -776,7 +775,6 @@
   <tabstop>comboConnID</tabstop>
   <tabstop>comboConnType</tabstop>
   <tabstop>lineEditIP</tabstop>
-  <tabstop>spinPort</tabstop>
   <tabstop>btnEnableMux</tabstop>
   <tabstop>btnEnableSingle</tabstop>
   <tabstop>btnSaveTCP</tabstop>

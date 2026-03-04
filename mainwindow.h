@@ -95,6 +95,7 @@ private:
     void updatePortStatus(bool isOpen); // 更新串口状态
     void appendReceiveData(const QByteArray &data); // 添加接收数据
     void updateConnStatus(int id, bool connected, const QString &info = ""); // 更新连接状态
+    void cancelWaitingForConnection();
     QString getCurrentWiFiSettings();  // 获取当前WiFi设置字符串
     QString getCurrentTCPSettings();   // 获取当前TCP设置字符串
 
@@ -123,6 +124,9 @@ private:
     QByteArray m_dataBuffer;      // 串口数据缓存
     bool m_isReceiving;            // 是否正在接收数据
     qint64 m_lastReceiveTime;      // 最后接收数据的时间
+    bool m_waitingForConnection;     // 是否正在等待TCP连接响应
+    int m_pendingConnId;             // 等待连接的ID
+    QString m_pendingConnInfo;       // 等待连接的详细信息
 };
 
 #endif // MAINWINDOW_H

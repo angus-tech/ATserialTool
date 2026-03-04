@@ -48,7 +48,7 @@ void MainWindow::initUI()
 
     // 初始化保存的变量
     m_currentConnId = 0;
-    m_savedPort = 8080;
+    m_savedPort = 8888;
 
     // 设置连接ID下拉框默认值
     ui->comboConnID->setCurrentIndex(0);
@@ -250,7 +250,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_lastReceiveTime(0)
     , m_autoScroll(true)
     , m_currentConnId(0)
-    , m_savedPort(8080)
+    , m_savedPort(8888)
+    , m_waitingForConnection(false)    // 初始化
+    , m_pendingConnId(-1)               // 初始化
 {
     ui->setupUi(this);
 
@@ -372,84 +374,130 @@ void MainWindow::readSerialData()
     qDebug() << "收到数据:" << response;
 
     // 检查响应中是否包含连接成功信息
-    if(response.contains("CONNECT")) {
-        qDebug() << "检测到CONNECT响应";
+    if(response.contains("CONNECT") || response.contains("CONNECTED")) {
+        qDebug() << "检测到连接相关响应:" << response;
 
-        // 尝试匹配 "0,CONNECT" 或 "CONNECT" 后面跟数字
-        QRegularExpression connRegex1("(\\d+),CONNECT");  // 匹配 "0,CONNECT"
-        QRegularExpression connRegex2("CONNECT\\s+(\\d+)"); // 匹配 "CONNECT 0"
-        QRegularExpression connRegex3("CONNECT"); // 只检测CONNECT，默认ID为0
+        // WiFi连接成功（不更新TCP状态）
+        if(response.contains("WIFI CONNECTED") || 
+        (response.contains("CONNECTED") && !response.contains(",CONNECT"))) {
+            qDebug() << "WiFi连接成功，不更新TCP连接状态";
+            ui->statusbar->showMessage("WiFi已连接", 2000);
+        }
+        // TCP连接成功 - 只有在等待连接时才更新
+        else if(m_waitingForConnection) {
+            // 尝试匹配 "0,CONNECT" 或 "CONNECT" 后面跟数字
+            QRegularExpression connRegex1("(\\d+),CONNECT\\b");
+            QRegularExpression connRegex2("CONNECT\\s+(\\d+)\\b");
 
-        QRegularExpressionMatch match;
-        int connId = -1;
+            QRegularExpressionMatch match;
+            int connId = -1;
+            bool matched = false;
 
-        if(response.contains(connRegex1)) {
-            match = connRegex1.match(response);
-            if(match.hasMatch()) {
-                connId = match.captured(1).toInt();
-                qDebug() << "匹配到格式1: 连接ID =" << connId;
+            if(response.contains(connRegex1)) {
+                match = connRegex1.match(response);
+                if(match.hasMatch()) {
+                    connId = match.captured(1).toInt();
+                    matched = true;
+                    qDebug() << "匹配到TCP连接格式1: 连接ID =" << connId;
+                }
+            }
+            else if(response.contains(connRegex2)) {
+                match = connRegex2.match(response);
+                if(match.hasMatch()) {
+                    connId = match.captured(1).toInt();
+                    matched = true;
+                    qDebug() << "匹配到TCP连接格式2: 连接ID =" << connId;
+                }
+            }
+            else if(response.contains("\\bCONNECT\\b") && !response.contains("CONNECTED")) {
+                connId = 0;
+                matched = true;
+                qDebug() << "匹配到TCP连接格式3: 连接ID = 0 (默认)";
+            }
+
+            // 验证是否是正在等待的连接
+            if(matched && connId == m_pendingConnId) {
+                updateConnStatus(connId, true, m_pendingConnInfo);
+                ui->statusbar->showMessage(QString("TCP连接%1已建立 - %2")
+                                        .arg(connId).arg(m_pendingConnInfo), 3000);
+
+                // 清除等待标志
+                m_waitingForConnection = false;
+                m_pendingConnId = -1;
+                m_pendingConnInfo.clear();
+            }
+            else if(matched) {
+                qDebug() << "收到其他连接的CONNECT响应，当前等待的是ID:" << m_pendingConnId;
             }
         }
-        else if(response.contains(connRegex2)) {
-            match = connRegex2.match(response);
-            if(match.hasMatch()) {
-                connId = match.captured(1).toInt();
-                qDebug() << "匹配到格式2: 连接ID =" << connId;
-            }
-        }
-        else if(response.contains("CONNECT")) {
-            // 如果没有数字，默认是单连接模式，ID为0
-            connId = 0;
-            qDebug() << "匹配到格式3: 连接ID = 0 (默认)";
-        }
-
-        if(connId >= 0 && connId <= 4) {
-            updateConnStatus(connId, true, response);
-            ui->statusbar->showMessage(QString("连接%1已建立").arg(connId), 2000);
+        else {
+            qDebug() << "收到CONNECT响应但没有等待连接，忽略";
         }
     }
     else if(response.contains("CLOSED")) {
-        qDebug() << "检测到CLOSED响应";
+        qDebug() << "检测到CLOSED响应:" << response;
 
-        QRegularExpression closeRegex1("(\\d+),CLOSED");
-        QRegularExpression closeRegex2("CLOSED\\s+(\\d+)");
-        QRegularExpression closeRegex3("CLOSED");
+        // 排除WiFi相关的CLOSED消息
+        if(response.contains("WIFI") || response.contains("AP")) {
+            qDebug() << "WiFi相关关闭，不更新TCP状态";
+        }
+        else {
+            QRegularExpression closeRegex1("(\\d+),CLOSED\\b");
+            QRegularExpression closeRegex2("CLOSED\\s+(\\d+)\\b");
 
-        QRegularExpressionMatch match;
-        int connId = -1;
+            QRegularExpressionMatch match;
+            int connId = -1;
 
-        if(response.contains(closeRegex1)) {
-            match = closeRegex1.match(response);
-            if(match.hasMatch()) {
-                connId = match.captured(1).toInt();
-                qDebug() << "匹配到格式1: 关闭连接ID =" << connId;
+            if(response.contains(closeRegex1)) {
+                match = closeRegex1.match(response);
+                if(match.hasMatch()) {
+                    connId = match.captured(1).toInt();
+                }
             }
-        }
-        else if(response.contains(closeRegex2)) {
-            match = closeRegex2.match(response);
-            if(match.hasMatch()) {
-                connId = match.captured(1).toInt();
-                qDebug() << "匹配到格式2: 关闭连接ID =" << connId;
+            else if(response.contains(closeRegex2)) {
+                match = closeRegex2.match(response);
+                if(match.hasMatch()) {
+                    connId = match.captured(1).toInt();
+                }
             }
-        }
-        else if(response.contains("CLOSED")) {
-            connId = 0;
-            qDebug() << "匹配到格式3: 关闭连接ID = 0 (默认)";
-        }
+            else if(response.contains("\\bCLOSED\\b")) {
+                connId = 0;
+            }
 
-        if(connId >= 0 && connId <= 4) {
-            updateConnStatus(connId, false, "已关闭");
-            ui->statusbar->showMessage(QString("连接%1已关闭").arg(connId), 2000);
+            if(connId >= 0 && connId <= 4) {
+                updateConnStatus(connId, false, "已关闭");
+                ui->statusbar->showMessage(QString("TCP连接%1已关闭").arg(connId), 2000);
+            }
         }
     }
-    else if(response.contains("ALREADY CONNECT")) {
+    else if(response.contains("ALREADY CONNECT") && m_waitingForConnection) {
         // 处理已经连接的情况
         QRegularExpression connRegex("(\\d+),ALREADY CONNECT");
         QRegularExpressionMatch match = connRegex.match(response);
         if(match.hasMatch()) {
             int connId = match.captured(1).toInt();
-            updateConnStatus(connId, true, "已连接");
-            ui->statusbar->showMessage(QString("连接%1已经存在").arg(connId), 2000);
+            if(connId == m_pendingConnId) {
+                updateConnStatus(connId, true, m_pendingConnInfo);
+                ui->statusbar->showMessage(QString("TCP连接%1已经存在 - %2")
+                                        .arg(connId).arg(m_pendingConnInfo), 3000);
+
+                // 清除等待标志
+                m_waitingForConnection = false;
+                m_pendingConnId = -1;
+                m_pendingConnInfo.clear();
+            }
+        }
+    }
+    else if(response.contains("ERROR") && m_waitingForConnection) {
+        // 连接失败
+        if(response.contains("CONNECT")) {
+            qDebug() << "TCP连接失败";
+            ui->statusbar->showMessage(QString("连接%1失败").arg(m_pendingConnId), 3000);
+
+            // 清除等待标志
+            m_waitingForConnection = false;
+            m_pendingConnId = -1;
+            m_pendingConnInfo.clear();
         }
     }
 
@@ -821,6 +869,11 @@ void MainWindow::on_btnSaveTCP_clicked()
 // 建立TCP连接
 void MainWindow::on_btnConnectTCP_clicked()
 {
+    if(!m_serialPort->isOpen()) {
+        QMessageBox::warning(this, "警告", "请先打开串口！");
+        return;
+    }
+
     QString ip = ui->lineEditIP->text().trimmed();
     int port = ui->spinPort->value();
     int connId = ui->comboConnID->currentText().toInt();
@@ -834,10 +887,32 @@ void MainWindow::on_btnConnectTCP_clicked()
     // 检查IP格式
     QRegularExpression ipRegex("^(\\d{1,3}\\.){3}\\d{1,3}$");
     if(!ipRegex.match(ip).hasMatch()) {
-        QMessageBox::warning(this, "警告", "IP地址格式不正确！");
+        QMessageBox::warning(this, "警告", "IP地址格式不正确！\n正确格式: 192.168.1.100");
         return;
     }
 
+    // 检查IP数值范围
+    QStringList parts = ip.split(".");
+    bool ipValid = true;
+    for(const QString &part : parts) {
+        int val = part.toInt();
+        if(val < 0 || val > 255) {
+            ipValid = false;
+            break;
+        }
+    }
+
+    if(!ipValid) {
+        QMessageBox::warning(this, "警告", "IP地址数值必须在0-255之间！");
+        return;
+    }
+
+    // 设置等待连接标志
+    m_waitingForConnection = true;
+    m_pendingConnId = connId;
+    m_pendingConnInfo = QString("%1:%2 (%3)").arg(ip).arg(port).arg(type);
+
+    // 发送连接命令
     QString cmd = QString("AT+CIPSTART=%1,\"%2\",\"%3\",%4")
             .arg(connId).arg(type).arg(ip).arg(port);
 
@@ -852,8 +927,17 @@ void MainWindow::on_btnConnectTCP_clicked()
     info.remoteInfo = QString("%1:%2").arg(ip).arg(port);
     m_connections[connId] = info;
 
+    // 更新状态栏
     ui->statusbar->showMessage(QString("正在连接 %1:%2 (ID:%3)...")
-                               .arg(ip).arg(port).arg(connId), 2000);
+                               .arg(ip).arg(port).arg(connId), 0);  // 0表示一直显示直到超时或成功
+
+    // 启动超时定时器（可选，比如5秒后如果没收到响应就取消等待）
+    QTimer::singleShot(5000, this, [this]() {
+        if(m_waitingForConnection) {
+            m_waitingForConnection = false;
+            ui->statusbar->showMessage("连接超时", 3000);
+        }
+    });
 }
 
 // 关闭指定连接
@@ -876,6 +960,16 @@ void MainWindow::on_comboConnID_currentIndexChanged(int index)
             ui->statusbar->showMessage(QString("连接%1: %2:%3 (%4) - 已连接")
                                        .arg(index).arg(info.ip).arg(info.port).arg(info.type), 2000);
         }
+    }
+}
+
+void MainWindow::cancelWaitingForConnection()
+{
+    if(m_waitingForConnection) {
+        m_waitingForConnection = false;
+        m_pendingConnId = -1;
+        m_pendingConnInfo.clear();
+        ui->statusbar->showMessage("连接已取消", 2000);
     }
 }
 
