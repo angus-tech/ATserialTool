@@ -2,16 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QSerialPort>
-#include <QSerialPortInfo>
 #include <QTimer>
-#include <QDateTime>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QTextStream>
-#include <QRegularExpression>
-#include <QMap>
-#include <QString>  // 添加这行
+#include "serial/serialmanager.h"
+#include "atcommand/atcommandmanager.h"
+#include "network/networkmanager.h"
+#include "ui/uimanager.h"
+#include "ui/uiactionhandler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,107 +22,74 @@ public:
     ~MainWindow();
 
 private slots:
-    // 串口操作
-    void on_btnRefresh_clicked();
-    void on_btnOpenPort_clicked();
-    void on_btnSend_clicked();
-    void on_btnClearReceive_clicked();
-    void on_btnClearSend_clicked();
+    // 这些槽函数现在只是简单地调用 actionHandler 的方法
+    void on_btnRefresh_clicked() { m_actionHandler->handleRefresh(); }
+    void on_btnOpenPort_clicked() { m_actionHandler->handleOpenPort(); }
+    void on_btnSend_clicked() { m_actionHandler->handleSendData(); }
+    void on_btnClearReceive_clicked() { m_actionHandler->handleClearReceive(); }
+    void on_btnClearSend_clicked() { m_actionHandler->handleClearSend(); }
 
-    // AT指令按钮 - 基础指令
-    void on_btnAT_clicked();
-    void on_btnATGMR_clicked();
-    void on_btnATE0_clicked();
-    void on_btnATE1_clicked();
-    void on_btnATRST_clicked();
-    void on_btnATCWLIF_clicked();
-    void on_btnATCWJAP_clicked();
-    void on_btnATCIFSR_clicked();
+    void on_btnAT_clicked() { m_actionHandler->handleAT(); }
+    void on_btnATGMR_clicked() { m_actionHandler->handleATGMR(); }
+    void on_btnATE0_clicked() { m_actionHandler->handleATE0(); }
+    void on_btnATE1_clicked() { m_actionHandler->handleATE1(); }
+    void on_btnATRST_clicked() { m_actionHandler->handleATRST(); }
+    void on_btnATCWLIF_clicked() { m_actionHandler->handleATCWLIF(); }
+    void on_btnATCWJAP_clicked() { m_actionHandler->handleATCWJAP(); }
+    void on_btnATCIFSR_clicked() { m_actionHandler->handleATCIFSR(); }
 
-    void on_btnSaveWiFi_clicked();              // 保存WiFi设置
-    void on_btnConnectWithSettings_clicked();    // 使用设置连接WiFi
+    void on_btnModeAP_clicked() { m_actionHandler->handleModeAP(); }
+    void on_btnModeSTA_clicked() { m_actionHandler->handleModeSTA(); }
+    void on_btnModeAPSTA_clicked() { m_actionHandler->handleModeAPSTA(); }
+    void on_btnNormalMode_clicked() { m_actionHandler->handleNormalMode(); }
+    void on_btnTransparentMode_clicked() { m_actionHandler->handleTransparentMode(); }
+    void on_btnEnableMux_clicked() { m_actionHandler->handleEnableMux(); }
+    void on_btnEnableSingle_clicked() { m_actionHandler->handleEnableSingle(); }
+    void on_btnSendData_clicked() { m_actionHandler->handleSendDataCmd(); }
+    void on_btnExitSend_clicked() { m_actionHandler->handleExitSend(); }
 
-    void on_btnNormalMode_clicked();            // 普通传输模式
-    void on_btnTransparentMode_clicked();       // 透传模式
+    void on_btnSaveWiFi_clicked() { m_actionHandler->handleSaveWiFi(); }
+    void on_btnConnectWithSettings_clicked() { m_actionHandler->handleConnectWiFi(); }
 
-    void on_btnEnableMux_clicked();              // 启用多连接
-    void on_btnEnableSingle_clicked();             // 启用单连接
+    void on_btnSaveTCP_clicked() { m_actionHandler->handleSaveTCP(); }
+    void on_btnConnectTCP_clicked() { m_actionHandler->handleConnectTCP(); }
+    void on_btnCloseConn_clicked() { m_actionHandler->handleCloseConn(); }
+    void on_comboConnID_currentIndexChanged(int index) { m_actionHandler->handleConnIDChanged(index); }
 
-    void on_btnSaveTCP_clicked();                // 保存TCP设置
-    void on_btnConnectTCP_clicked();             // 建立TCP连接
-    void on_btnCloseConn_clicked();              // 关闭指定连接
+    void on_btnSendCustom_clicked() { m_actionHandler->handleSendCustom(); }
 
-    void on_btnSendData_clicked();
-    void on_btnExitSend_clicked();
+    void on_cbTimerSend_toggled(bool checked) { m_actionHandler->handleTimerSendToggled(checked); }
+    void on_spinTimerPeriod_valueChanged(int value) { m_actionHandler->handleTimerPeriodChanged(value); }
+    void timerSendData() { m_actionHandler->handleTimerTimeout(); }
 
-    void on_btnModeAP_clicked();
-    void on_btnModeSTA_clicked();
-    void on_btnModeAPSTA_clicked();
+    void on_cbAutoScroll_toggled(bool checked) { m_autoScroll = checked; }
 
-    void on_comboConnID_currentIndexChanged(int index); // 连接ID改变
+    void on_actionExit_triggered() { m_actionHandler->handleExit(); }
+    void on_actionAbout_triggered() { m_actionHandler->handleAbout(); }
+    void on_actionOpen_triggered() { m_actionHandler->handleOpenFile(); }
+    void on_actionSave_triggered() { m_actionHandler->handleSaveFile(); }
 
-    // 自定义AT指令
-    void on_btnSendCustom_clicked();
-
-    // 数据接收
-    void readSerialData();
-
-    // 定时发送
-    void on_cbTimerSend_toggled(bool checked);
-    void on_spinTimerPeriod_valueChanged(int value);
-    void timerSendData();
-
-    // 其他控件
-    void on_cbAutoScroll_toggled(bool checked);
-
-    // 菜单操作
-    void on_actionExit_triggered();
-    void on_actionAbout_triggered();
-    void on_actionOpen_triggered();
-    void on_actionSave_triggered();
-
-    void processBufferedData();  // 处理缓存的串口数据
+    // 信号处理函数（这些保留在 MainWindow 中）
+    void handleSerialData(const QByteArray &data);
+    void handlePortStatusChanged(bool isOpen);
+    void handleConnectionStatusChanged(int connId, bool connected, const QString &info);
+    void handleConnectionTimeout(int connId);
+    void processBufferedData();
 
 private:
-    // 辅助函数
-    void initUI();                    // 初始化UI
-    void sendATCommand(const QString &command);  // 发送AT指令
-    void refreshPortList();            // 刷新串口列表
-    void updatePortStatus(bool isOpen); // 更新串口状态
-    void appendReceiveData(const QByteArray &data); // 添加接收数据
-    void updateConnStatus(int id, bool connected, const QString &info = ""); // 更新连接状态
-    void cancelWaitingForConnection();
-    QString getCurrentWiFiSettings();  // 获取当前WiFi设置字符串
-    QString getCurrentTCPSettings();   // 获取当前TCP设置字符串
-
-    // TCP连接状态管理
-    struct ConnectionInfo {
-        bool isConnected;
-        QString ip;
-        int port;
-        QString type;
-        QString remoteInfo;
-    };
-
-    QMap<int, ConnectionInfo> m_connections;  // 存储多连接状态
-    int m_currentConnId;                       // 当前选中的连接ID
-    QString m_savedSSID;                        // 保存的SSID
-    QString m_savedPassword;                     // 保存的密码
-    QString m_savedIP;                           // 保存的IP
-    int m_savedPort;                             // 保存的端口
+    void setupConnections();
 
 private:
     Ui::MainWindow *ui;
-    QSerialPort *m_serialPort;
-    QTimer *m_timer;
+    SerialManager *m_serialMgr;
+    ATCommandManager *m_atCmdMgr;
+    NetworkManager *m_networkMgr;
+    UIManager *m_uiMgr;
+    UIActionHandler *m_actionHandler;  // 新增的动作处理器
+
+    QTimer *m_dataTimer;
+    QByteArray m_dataBuffer;
     bool m_autoScroll;
-    QTimer *m_dataTimer;          // 数据延迟处理定时器
-    QByteArray m_dataBuffer;      // 串口数据缓存
-    bool m_isReceiving;            // 是否正在接收数据
-    qint64 m_lastReceiveTime;      // 最后接收数据的时间
-    bool m_waitingForConnection;     // 是否正在等待TCP连接响应
-    int m_pendingConnId;             // 等待连接的ID
-    QString m_pendingConnInfo;       // 等待连接的详细信息
 };
 
 #endif // MAINWINDOW_H

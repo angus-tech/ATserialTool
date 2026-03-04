@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1023</width>
-    <height>950</height>
+    <height>942</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -365,9 +365,6 @@
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutPort"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="layoutTransferMode">

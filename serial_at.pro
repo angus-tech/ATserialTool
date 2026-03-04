@@ -1,39 +1,38 @@
-QT       += core gui \
-        serialport widgets
-
+QT += core gui serialport widgets
 TARGET = serial_at
-
 TEMPLATE = app
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
+# 包含目录
+INCLUDEPATH += . \
+               serial \
+               atcommand \
+               network \
+               ui
 
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# 源文件
+SOURCES += main.cpp \
+           mainwindow.cpp \
+           serial/serialmanager.cpp \
+           network/networkmanager.cpp \
+           atcommand/atcommandmanager.cpp \
+           ui/uiactionhandler.cpp \
+           ui/uimanager.cpp
 
-SOURCES += \
-    main.cpp \
-    mainwindow.cpp
+# 头文件
+HEADERS += mainwindow.h \
+           serial/serialmanager.h \
+           atcommand/atcommandmanager.h \
+           network/networkmanager.h \
+           ui/uiactionhandler.h \
+           ui/uimanager.h
 
-HEADERS += \
-    mainwindow.h
+FORMS += mainwindow.ui
 
-FORMS += \
-    mainwindow.ui
-
-TRANSLATIONS += \
-    serial_at_zh_CN.ts
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+# 输出目录
+DESTDIR = bin
+MOC_DIR = temp/moc
+RCC_DIR = temp/rcc
+UI_DIR = temp/ui
+OBJECTS_DIR = temp/obj
