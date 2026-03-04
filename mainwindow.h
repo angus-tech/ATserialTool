@@ -40,32 +40,29 @@ private slots:
     void on_btnATE1_clicked();
     void on_btnATRST_clicked();
     void on_btnATCWLIF_clicked();
-    void on_btnATCIPMODE0_clicked();
-    void on_btnATCIPMODE1_clicked();
+    void on_btnATCWJAP_clicked();
+    void on_btnATCIFSR_clicked();
 
-    // AT指令按钮 - 设备信息
-    void on_btnATCWMODEAP_clicked();
-    void on_btnATCWMODESTA_clicked();
-    void on_btnATCWMODEAPSTA_clicked();
-
-    // AT指令按钮 - 网络状态
-    void on_btnScanWIFI_clicked();
-    void on_btnConnectWIFI_clicked();
-    void on_btnReadIP_clicked();
-
-    // AT指令按钮 - TCP/IP
-    void on_btnConnectAP_clicked();
-    void on_btnIntoSend_clicked();
-    void on_btnExitSend_clicked();
-
-    // 新增：设定信息组相关槽函数
     void on_btnSaveWiFi_clicked();              // 保存WiFi设置
     void on_btnConnectWithSettings_clicked();    // 使用设置连接WiFi
+
+    void on_btnNormalMode_clicked();            // 普通传输模式
+    void on_btnTransparentMode_clicked();       // 透传模式
+
     void on_btnEnableMux_clicked();              // 启用多连接
-    void on_btnDisableMux_clicked();             // 禁用多连接
+    void on_btnEnableSingle_clicked();             // 启用单连接
+
     void on_btnSaveTCP_clicked();                // 保存TCP设置
     void on_btnConnectTCP_clicked();             // 建立TCP连接
     void on_btnCloseConn_clicked();              // 关闭指定连接
+
+    void on_btnSendData_clicked();
+    void on_btnExitSend_clicked();
+
+    void on_btnModeAP_clicked();
+    void on_btnModeSTA_clicked();
+    void on_btnModeAPSTA_clicked();
+
     void on_comboConnID_currentIndexChanged(int index); // 连接ID改变
 
     // 自定义AT指令

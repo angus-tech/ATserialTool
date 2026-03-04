@@ -557,29 +557,39 @@ void MainWindow::on_btnATE0_clicked() { sendATCommand("ATE0"); }
 void MainWindow::on_btnATE1_clicked() { sendATCommand("ATE1"); }
 void MainWindow::on_btnATRST_clicked() { sendATCommand("AT+RST"); }
 void MainWindow::on_btnATCWLIF_clicked() { sendATCommand("AT+CWLIF"); }
-void MainWindow::on_btnATCIPMODE0_clicked() { sendATCommand("AT+CIPMODE=0"); }     // 0:普通模式
-void MainWindow::on_btnATCIPMODE1_clicked() { sendATCommand("AT+CIPMODE=1"); }   //   1:透传模式
+void MainWindow::on_btnATCWJAP_clicked() { sendATCommand("AT+CWJAP?"); }
+void MainWindow::on_btnATCIFSR_clicked() { sendATCommand("AT+CIFSR"); }
 
-//=============================================================================
-// AT指令槽函数 - 设备信息
-//=============================================================================
-void MainWindow::on_btnATCWMODESTA_clicked() { sendATCommand("AT+CWMODE=1"); }
-void MainWindow::on_btnATCWMODEAP_clicked() { sendATCommand("AT+CWMODE=2"); }
-void MainWindow::on_btnATCWMODEAPSTA_clicked() { sendATCommand("AT+CWMODE=3"); }
+void MainWindow::on_btnModeAP_clicked() { sendATCommand("AT+CWMODE=1"); }
+void MainWindow::on_btnModeSTA_clicked() { sendATCommand("AT+CWMODE=2"); }
+void MainWindow::on_btnModeAPSTA_clicked() { sendATCommand("AT+CWMODE=3"); }
 
-//=============================================================================
-// AT指令槽函数 - 网络状态
-//=============================================================================
-void MainWindow::on_btnScanWIFI_clicked() { sendATCommand("AT+CWLAP"); }
-void MainWindow::on_btnConnectWIFI_clicked() { sendATCommand("AT+CWJAP=\"Sheentec_work\",\"sheentec\""); }
-void MainWindow::on_btnReadIP_clicked() { sendATCommand("AT+CIFSR"); }
-
-//=============================================================================
-// AT指令槽函数 - 通讯测试
-//=============================================================================
-void MainWindow::on_btnConnectAP_clicked() { sendATCommand("AT+CIPSTART=\"TCP\",\"192.168.20.2\",8888"); }
-void MainWindow::on_btnIntoSend_clicked() { sendATCommand("AT+CIPSEND"); }
+void MainWindow::on_btnSendData_clicked() { sendATCommand(QString("AT+CIPSEND=%1,5").arg(ui->comboConnID->currentText().toInt())); }
 void MainWindow::on_btnExitSend_clicked() { sendATCommand("+++"); }
+
+void MainWindow::on_btnNormalMode_clicked() { sendATCommand("AT+CIPMUX=0"); }
+void MainWindow::on_btnTransparentMode_clicked() { sendATCommand("AT+CIPMUX=1"); }
+
+// //=============================================================================
+// // AT指令槽函数 - 设备信息
+// //=============================================================================
+// void MainWindow::on_btnATCWMODESTA_clicked() { sendATCommand("AT+CWMODE=1"); }
+// void MainWindow::on_btnATCWMODEAP_clicked() { sendATCommand("AT+CWMODE=2"); }
+// void MainWindow::on_btnATCWMODEAPSTA_clicked() { sendATCommand("AT+CWMODE=3"); }
+
+// //=============================================================================
+// // AT指令槽函数 - 网络状态
+// //=============================================================================
+// void MainWindow::on_btnScanWIFI_clicked() { sendATCommand("AT+CWLAP"); }
+// void MainWindow::on_btnConnectWIFI_clicked() { sendATCommand("AT+CWJAP=\"Sheentec_work\",\"sheentec\""); }
+// void MainWindow::on_btnReadIP_clicked() { sendATCommand("AT+CIFSR"); }
+
+// //=============================================================================
+// // AT指令槽函数 - 通讯测试
+// //=============================================================================
+// void MainWindow::on_btnConnectAP_clicked() { sendATCommand("AT+CIPSTART=\"TCP\",\"192.168.20.2\",8888"); }
+// void MainWindow::on_btnIntoSend_clicked() { sendATCommand("AT+CIPSEND"); }
+// void MainWindow::on_btnExitSend_clicked() { sendATCommand("+++"); }
 
 //=============================================================================
 // 自定义AT指令
@@ -787,7 +797,7 @@ void MainWindow::on_btnEnableMux_clicked()
 }
 
 // 禁用多连接
-void MainWindow::on_btnDisableMux_clicked()
+void MainWindow::on_btnEnableSingle_clicked()
 {
     sendATCommand("AT+CIPMUX=0");
 }
@@ -824,7 +834,7 @@ void MainWindow::on_btnConnectTCP_clicked()
     // 检查IP格式
     QRegularExpression ipRegex("^(\\d{1,3}\\.){3}\\d{1,3}$");
     if(!ipRegex.match(ip).hasMatch()) {
-        QMessageBox::warning(this, "警告", "IP地址格式不正确！\n正确格式: 192.168.1.100");
+        QMessageBox::warning(this, "警告", "IP地址格式不正确！");
         return;
     }
 

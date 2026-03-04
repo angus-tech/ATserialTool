@@ -93,21 +93,21 @@
            <item>
             <widget class="QPushButton" name="btnATGMR">
              <property name="text">
-              <string>AT+GMR</string>
+              <string>固件</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnATE0">
              <property name="text">
-              <string>ATE0</string>
+              <string>关回显</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnATE1">
              <property name="text">
-              <string>ATE1</string>
+              <string>开回显</string>
              </property>
             </widget>
            </item>
@@ -118,78 +118,32 @@
            <item>
             <widget class="QPushButton" name="btnATRST">
              <property name="text">
-              <string>AT+RST</string>
+              <string>复位</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnATCWLIF">
              <property name="text">
-              <string>AT+CWLIF</string>
+              <string>查询STA</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATCIPMODE0">
+            <widget class="QPushButton" name="btnATCWJAP">
              <property name="text">
-              <string>TCP普通</string>
+              <string>查询AP</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnATCIPMODE1">
+            <widget class="QPushButton" name="btnATCIFSR">
              <property name="text">
-              <string>TCP透传</string>
+              <string>查询IP</string>
              </property>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelInfo">
-           <property name="text">
-            <string>设备信息：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layoutInfo">
-           <item>
-            <widget class="QPushButton" name="btnATCWMODEAP">
-             <property name="text">
-              <string>AP</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnATCWMODESTA">
-             <property name="text">
-              <string>STA</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnATCWMODEAPSTA">
-             <property name="text">
-              <string>AP+STA</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelNetwork">
-           <property name="text">
-            <string>网络状态：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelTCP">
-           <property name="text">
-            <string>TCP/IP：</string>
-           </property>
-          </widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="layoutCustom">
@@ -416,33 +370,30 @@
            </item>
           </layout>
          </item>
-<!-- 新增：普通传输和透传传输按钮 -->
          <item>
           <layout class="QHBoxLayout" name="layoutTransferMode">
            <item>
             <widget class="QPushButton" name="btnNormalMode">
+             <property name="toolTip">
+              <string/>
+             </property>
              <property name="text">
               <string>普通传输</string>
-             </property>
-             <property name="toolTip">
-              <string>设置普通传输模式 (AT+CIPMODE=0)</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnTransparentMode">
+             <property name="toolTip">
+              <string/>
+             </property>
              <property name="text">
               <string>透传传输</string>
              </property>
-             <property name="toolTip">
-              <string>设置透传传输模式 (AT+CIPMODE=1)</string>
-             </property>
             </widget>
            </item>
           </layout>
          </item>
-         
-         <!-- 多连接控制按钮 -->
          <item>
           <layout class="QHBoxLayout" name="layoutMultiConn">
            <item>
@@ -453,16 +404,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnDisableMux">
+            <widget class="QPushButton" name="btnEnableSingle">
              <property name="text">
-              <string>禁用多连接</string>
+              <string>启用单连接</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
-         
-         <!-- TCP操作按钮 -->
          <item>
           <layout class="QHBoxLayout" name="layoutTCPButtons">
            <item>
@@ -491,16 +440,16 @@
          <item>
           <layout class="QHBoxLayout" name="layoutMultiConn">
            <item>
-            <widget class="QPushButton" name="btnEnableMux">
+            <widget class="QPushButton" name="btnSendData">
              <property name="text">
-              <string>启用多连接</string>
+              <string>发送数据</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnDisableMux">
+            <widget class="QPushButton" name="btnExitSend">
              <property name="text">
-              <string>禁用多连接</string>
+              <string>退出发送</string>
              </property>
             </widget>
            </item>
@@ -509,23 +458,23 @@
          <item>
           <layout class="QHBoxLayout" name="layoutTCPButtons">
            <item>
-            <widget class="QPushButton" name="btnSaveTCP">
+            <widget class="QPushButton" name="btnModeAP">
              <property name="text">
-              <string>保存设置</string>
+              <string>AP模式</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnConnectTCP">
+            <widget class="QPushButton" name="btnModeSTA">
              <property name="text">
-              <string>建立连接</string>
+              <string>STA模式</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnCloseConn">
+            <widget class="QPushButton" name="btnModeAPSTA">
              <property name="text">
-              <string>关闭连接</string>
+              <string>AP+STA模式</string>
              </property>
             </widget>
            </item>
@@ -816,11 +765,8 @@
   <tabstop>btnATE1</tabstop>
   <tabstop>btnATRST</tabstop>
   <tabstop>btnATCWLIF</tabstop>
-  <tabstop>btnATCIPMODE0</tabstop>
-  <tabstop>btnATCIPMODE1</tabstop>
-  <tabstop>btnATCWMODEAP</tabstop>
-  <tabstop>btnATCWMODESTA</tabstop>
-  <tabstop>btnATCWMODEAPSTA</tabstop>
+  <tabstop>btnATCWJAP</tabstop>
+  <tabstop>btnATCIFSR</tabstop>
   <tabstop>lineEditCustomAT</tabstop>
   <tabstop>btnSendCustom</tabstop>
   <tabstop>lineEditSSID</tabstop>
@@ -832,7 +778,7 @@
   <tabstop>lineEditIP</tabstop>
   <tabstop>spinPort</tabstop>
   <tabstop>btnEnableMux</tabstop>
-  <tabstop>btnDisableMux</tabstop>
+  <tabstop>btnEnableSingle</tabstop>
   <tabstop>btnSaveTCP</tabstop>
   <tabstop>btnConnectTCP</tabstop>
   <tabstop>btnCloseConn</tabstop>
